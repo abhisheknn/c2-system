@@ -3,7 +3,15 @@ package com.micro.c2system.pojo;
 public class Command {
 	String commandName;
 	String command;
-	String commander;
+	String commander;  //User
+	String tenantId;
+	
+	public String getTenantId() {
+		return tenantId;
+	}
+	public void setTenantId(String tenantId) {
+		this.tenantId = tenantId;
+	}
 	public String getCommandName() {
 		return commandName;
 	}
