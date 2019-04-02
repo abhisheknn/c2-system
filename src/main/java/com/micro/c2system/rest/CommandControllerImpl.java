@@ -23,5 +23,11 @@ public class CommandControllerImpl implements CommandController {
 	public void sendCommand(@PathVariable(value="tenantId") String tenantId,@PathVariable(value="machine") String machine, @RequestBody Command command) {
 		 commandService.sendToMQTTBroker(tenantId,machine,command);
 	}
+	
+	@Override
+	@RequestMapping(value="/send/policy",method=RequestMethod.POST,consumes = MediaType.APPLICATION_JSON_VALUE)
+	public void sendCommand( @RequestBody String policy) {
+		commandService.sendPolicy(policy);
+	}
 
 }
