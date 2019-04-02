@@ -1,0 +1,194 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.micro</groupId>
+  <artifactId>c2-system</artifactId>
+  <packaging>jar</packaging>
+  <version>0.0.1</version>
+  <name>c2-system</name>
+  <url>http://maven.apache.org</url>
+   <properties>
+   <maven.compiler.source>1.8</maven.compiler.source>
+   <maven.compiler.target>1.8</maven.compiler.target>
+   <docker.image.prefix>abhisheknn</docker.image.prefix>
+   <spring-cloud.version>Finchley.RELEASE</spring-cloud.version>
+</properties>
+
+  <parent>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-starter-parent</artifactId>
+        <version>2.0.3.RELEASE</version>
+        <relativePath /> <!-- lookup parent from repository -->
+ </parent>
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+ 
+     <dependencies>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+       <exclusions>
+		<exclusion>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</exclusion>
+	</exclusions>
+	
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-devtools</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+       <exclusions>
+		<exclusion>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-logging</artifactId>
+		</exclusion>
+	</exclusions>
+        </dependency>
+
+	
+	
+	<dependency>
+    <groupId>junit</groupId>
+    <artifactId>junit</artifactId>
+    <version>4.11</version>
+    <scope>test</scope>
+	</dependency>
+	<dependency>
+		<groupId>com.micro</groupId>
+  		<artifactId>commonlib</artifactId>
+  		<version>0.1</version>	
+	</dependency>
+	
+
+<!--
+<dependency>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-starter-log4j</artifactId>
+  <version>1.3.8.RELEASE</version>
+</dependency>
+-->
+    <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-api</artifactId>
+    <version>2.11.0</version>
+  </dependency>
+  <dependency>
+    <groupId>org.apache.logging.log4j</groupId>
+    <artifactId>log4j-core</artifactId>
+    <version>2.11.0</version>
+  </dependency>
+<!--  -->  
+
+<dependency>
+        <groupId>commons-logging</groupId>
+        <artifactId>commons-logging</artifactId>
+        <version>1.1.1</version>
+</dependency>
+
+<dependency>
+    <groupId>org.apache.kafka</groupId>
+    <artifactId>kafka-clients</artifactId>
+    <version>0.10.2.1</version>
+</dependency>
+
+<dependency>
+  <groupId>com.spotify</groupId>
+  <artifactId>docker-client</artifactId>
+  <version>8.14.0</version>
+</dependency>
+
+
+<!-- dependencies for config server-->
+<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-config</artifactId>
+</dependency>
+
+<!-- Cassandra -->
+<dependency>
+  <groupId>com.datastax.cassandra</groupId>
+  <artifactId>cassandra-driver-core</artifactId>
+  <version>3.6.0</version>
+</dependency>
+
+
+<dependency>
+  <groupId>com.datastax.cassandra</groupId>
+  <artifactId>cassandra-driver-mapping</artifactId>
+  <version>3.6.0</version>
+</dependency>
+
+<!-- Unit testing Spring dependencies with environment variables-->
+
+<dependency>
+  <groupId>com.github.stefanbirkner</groupId>
+  <artifactId>system-rules</artifactId>
+  <version>1.19.0</version>
+  <scope>test</scope>
+</dependency>
+
+<!-- MQTT Client -->	  
+
+	<dependency>
+	<groupId>org.eclipse.paho</groupId>
+	<artifactId>org.eclipse.paho.client.mqttv3</artifactId>
+	<version>1.2.0</version>
+</dependency>
+
+
+</dependencies>
+	
+
+ <build>
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>dockerfile-maven-plugin</artifactId>
+            <version>1.3.6</version>
+            <configuration>
+            <useConfigFile>false</useConfigFile>
+            <useMavenSettingsForAuth>true</useMavenSettingsForAuth>	
+                <repository>${docker.image.prefix}/${project.artifactId}</repository>
+            <buildArgs>
+		<JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+			</buildArgs>
+            </configuration>
+	<executions>
+	<execution>
+		<id>default</id>
+		<phase>install</phase>
+		<goals>
+			<goal>build</goal>
+		</goals>
+	</execution>
+	</executions>
+        </plugin>  
+	</plugins>
+  </build>
+</project>
